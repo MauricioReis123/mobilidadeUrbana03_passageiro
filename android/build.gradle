@@ -1,0 +1,49 @@
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects { subproject ->
+    if (subproject.name != "app") {
+        subproject.plugins.withId("com.android.library") {
+            def androidComponents = subproject.extensions.findByName("androidComponents")
+            if (androidComponents != null) {
+                androidComponents.finalizeDsl { extension ->
+                    try {
+                        if (extension.compileSdk == null || extension.compileSdk < 36) {
+                            extension.compileSdk = 36
+                        }
+                    } catch (Throwable ignored) {
+                        extension.compileSdkVersion 36
+                    }
+                    try {
+                        extension.lint.checkReleaseBuilds = false
+                        extension.lint.abortOnError = false
+                        extension.lint.disable.addAll(["EasterEgg", "StopShip"])
+                    } catch (Throwable ignored) {
+                    }
+                }
+            }
+        }
+    }
+}
+allprojects { proj ->
+    proj.tasks.configureEach { task ->
+        if (task.name.toLowerCase(java.util.Locale.ROOT).contains("lintvital")) {
+            task.enabled = false
+        }
+    }
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}

@@ -1,0 +1,46 @@
+name: omni_passageiro
+description: "Aplicativo OMNI Mobilidade Urbana — Passageiro. Plataforma inteligente de mobilidade, transporte particular, fidelização e automações comerciais."
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.2.0 <4.0.0"
+  flutter: ">=3.16.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # GPS e Geolocalização (100% Nativo e Gratuito)
+  geolocator: ^10.1.0
+  geocoding: ^3.0.0
+
+  # Firebase Core, Realtime Database, Auth e Cloud Messaging (FCM)
+  firebase_core: ^2.27.0
+  firebase_database: ^10.4.9
+  firebase_auth: ^4.17.8
+  firebase_messaging: ^14.7.19
+
+  # Conexão HTTP Backend Centralizado
+  http: ^1.2.0
+
+  # Gerenciamento de Estado e Armazenamento
+  provider: ^6.1.1
+  shared_preferences: ^2.2.2
+
+  # Pagamentos e Códigos QR Pix
+  qr_flutter: ^4.1.0
+
+  # Internacionalização, Hash e Utilitários
+  intl: ^0.19.0
+  flutter_svg: ^2.0.9
+  url_launcher: ^6.2.4
+  crypto: ^3.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
