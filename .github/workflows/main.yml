@@ -1,0 +1,45 @@
+name: Build Flutter APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_android:
+    name: Compilar APK Android
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar código limpo do repositório
+        uses: actions/checkout@v4
+        with:
+          clean: true
+          fetch-depth: 1
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Configurar Flutter (sem cache antigo)
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: false
+
+      - name: Limpar resíduos de builds anteriores
+        run: |
+          rm -rf build .dart_tool android/.gradle android/app/build
+          flutter clean
+
+      - name: Instalar dependências
+        run: flutter pub get
+
+      - name: Gerar APK Release
+        run: flutter build apk --release
+
+      - name: Disponibilizar APK para download
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
